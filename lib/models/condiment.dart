@@ -12,13 +12,13 @@ class Condiment {
       required this.stock,
       required this.unit});
 
-  Condiment.fromJson(String id, Map<String, Object> json)
+  Condiment.fromJson(String id, Map<String, dynamic>? json)
       : this(
             id: id,
-            name: json['name'] as String,
-            cost: json['cost'] as double,
-            stock: json['stock'] as int,
-            unit: json['unit'] as String);
+            name: null != json ? json['name'] as String : '',
+            cost: null != json ? json['cost'] as double : 0.0,
+            stock: null != json ? json['stock'] as int : 0,
+            unit: null != json ? json['unit'] ?? '' as String : '');
 
   Map<String, Object> toJson() {
     return {

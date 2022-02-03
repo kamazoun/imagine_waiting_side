@@ -19,13 +19,15 @@ class SelectWaiter extends StatelessWidget {
               'Place order for: ${employeeController.selectedWaiter?.name ?? ''}'),
         ),
         actions: [
-          IconButton(
-              onPressed: null != employeeController.selectedWaiter
-                  ? () {
-                      Get.to(() => const SelectFoods());
-                    }
-                  : null,
-              icon: const Icon(Icons.next_plan))
+          GetBuilder<EmployeeController>(
+            builder: (employeeController) => IconButton(
+                onPressed: null != employeeController.selectedWaiter
+                    ? () {
+                        Get.to(() => const SelectFoods());
+                      }
+                    : null,
+                icon: const Icon(Icons.next_plan)),
+          )
         ],
       ),
       body: GetX<EmployeeController>(

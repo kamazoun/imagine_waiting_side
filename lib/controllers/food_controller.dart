@@ -1,14 +1,18 @@
 import 'package:get/get.dart';
+import 'package:imagine_waiting_side/db/condiment_firestore.dart';
 import 'package:imagine_waiting_side/db/drink_firestore.dart';
 import 'package:imagine_waiting_side/db/food_firestore.dart';
+import 'package:imagine_waiting_side/models/condiment.dart';
 import 'package:imagine_waiting_side/models/drink.dart';
 import 'package:imagine_waiting_side/models/food.dart';
 
 class FoodController extends GetxController {
   final RxList<Drink> _drinks = RxList<Drink>([]);
+  final RxList<Condiment> _condiments = RxList<Condiment>([]);
   final RxList<Food> _foods = RxList<Food>([]);
 
   List<Drink> get drinks => _drinks;
+  List<Condiment> get condiments => _condiments;
   List<Food> get foods => _foods;
 
   Map<Food, int> foodOrders = {};
@@ -24,12 +28,18 @@ class FoodController extends GetxController {
 
   FoodController() {
     setAllDrinks();
+    setAllCondiments();
     setAllFoods();
   }
 
   setAllDrinks() async {
     final d = await DrinkFirestore.getAllDrinks();
     _drinks.assignAll(d);
+  }
+
+  setAllCondiments() async {
+    final c = await CondimentFirestore.getAllCondiments();
+    _condiments.assignAll(c);
   }
 
   setAllFoods() async {
@@ -70,7 +80,9 @@ class FoodController extends GetxController {
         drinkOrders[drink] = drinkOrders[drink]! + 1;
       }
     } else {
-      drinkOrders[drink] = 1;
+      if (drink.stock > 0) {
+        drinkOrders[drink] = 1;
+      }
     }
 
     update();
@@ -121,7 +133,12 @@ class FoodController extends GetxController {
 
   reduceFoodCondimentsStock() {
     foodOrders.forEach((Food food, int quantity) {
-      food.portions.forEach
+      food.portions.forEach((Condiment condiment, int condimentQuantity) {
+        print(
+            'LA QTU ${quantity * condimentQuantity}, LA ESTORC ${condiment.stock}');
+        CondimentFirestore.setCondimentStock(
+            condiment.id, condiment.stock - (quantity * condimentQuantity));
+      });
     });
   }
 }
