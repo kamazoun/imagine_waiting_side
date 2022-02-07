@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -33,8 +34,10 @@ class SelectWaiter extends StatelessWidget {
       body: GetX<EmployeeController>(
         builder: (employeeController) => GridView.builder(
             itemCount: employeeController.waiters.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, crossAxisSpacing: 25, mainAxisSpacing: 50),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: kIsWeb ? 5 : 2,
+                crossAxisSpacing: 25,
+                mainAxisSpacing: 50),
             itemBuilder: (_, index) =>
                 WaiterGrid(waiter: employeeController.waiters[index])),
       ),
