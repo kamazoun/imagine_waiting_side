@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -24,11 +25,16 @@ class SelectDrinks extends StatelessWidget {
           IconButton(onPressed: passOrder, icon: const Icon(Icons.check))
         ],
       ),
-      body: ListView.builder(
-        itemBuilder: (_, index) {
-          return DrinkOrdersListItem(drink: foodController.drinks[index]);
-        },
-        itemCount: foodController.drinks.length,
+      body: Padding(
+        padding: kIsWeb
+            ? const EdgeInsets.symmetric(vertical: 8.0, horizontal: 30)
+            : const EdgeInsets.all(1.0),
+        child: ListView.builder(
+          itemBuilder: (_, index) {
+            return DrinkOrdersListItem(drink: foodController.drinks[index]);
+          },
+          itemCount: foodController.drinks.length,
+        ),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -26,11 +27,16 @@ class SelectFoods extends StatelessWidget {
               icon: const Icon(Icons.next_plan))
         ],
       ),
-      body: ListView.builder(
-        itemBuilder: (_, index) {
-          return FoodOrdersListItem(food: foodController.foods[index]);
-        },
-        itemCount: foodController.foods.length,
+      body: Padding(
+        padding: kIsWeb
+            ? const EdgeInsets.symmetric(vertical: 8.0, horizontal: 30)
+            : const EdgeInsets.all(1.0),
+        child: ListView.builder(
+          itemBuilder: (_, index) {
+            return FoodOrdersListItem(food: foodController.foods[index]);
+          },
+          itemCount: foodController.foods.length,
+        ),
       ),
     );
   }
