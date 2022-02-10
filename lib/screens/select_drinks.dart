@@ -57,6 +57,10 @@ class SelectDrinks extends StatelessWidget {
       foodItems: foodController.foodOrders
           .map((key, value) => MapEntry(key.id, value)),
     );
+
+    if (order.drinkItems.isEmpty && order.foodItems.isEmpty) {
+      return;
+    }
     orderController.createOrder(order);
 
     foodController.reduceDrinkStock();
