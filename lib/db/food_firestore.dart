@@ -22,6 +22,7 @@ class FoodFirestore {
 
   static Future<List<Food>> getAllFoods() async {
     List<QueryDocumentSnapshot<Object?>> foods = await _foodsRef
+        .orderBy('name')
         .get()
         .then((QuerySnapshot<Object?> snapshot) => snapshot.docs);
 

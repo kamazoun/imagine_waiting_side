@@ -20,7 +20,7 @@ class DrinkFirestore {
 
   static Future<List<Drink>> getAllDrinks() async {
     List<QueryDocumentSnapshot<Object?>> drinks = await _drinksRef
-        .orderBy('stock')
+        .orderBy('name')
         .get()
         .then((QuerySnapshot<Object?> snapshot) => snapshot.docs);
 
