@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:imagine_waiting_side/db/condiment_firestore.dart';
 import 'package:imagine_waiting_side/db/drink_firestore.dart';
@@ -8,10 +9,12 @@ import 'package:imagine_waiting_side/models/food.dart';
 
 class FoodController extends GetxController {
   final RxList<Drink> _drinks = RxList<Drink>([]);
+  final RxList<Drink> _searchedDrinks = RxList<Drink>([]);
   final RxList<Condiment> _condiments = RxList<Condiment>([]);
   final RxList<Food> _foods = RxList<Food>([]);
 
   List<Drink> get drinks => _drinks;
+  List<Drink> get searchedDrinks => _searchedDrinks;
   List<Condiment> get condiments => _condiments;
   List<Food> get foods => _foods;
 
@@ -35,6 +38,7 @@ class FoodController extends GetxController {
   setAllDrinks() async {
     final d = await DrinkFirestore.getAllDrinks();
     _drinks.assignAll(d);
+    _searchedDrinks.assignAll(d);
   }
 
   setAllCondiments() async {
@@ -138,5 +142,18 @@ class FoodController extends GetxController {
             condiment.id, condiment.stock - (quantity * condimentQuantity));
       });
     });
+  }
+
+  void setSearchedDrinks({String? value}) {
+    if (null == value || value.isEmpty) {
+      _searchedDrinks.assignAll(drinks);
+      update();
+      return;
+    }
+    _searchedDrinks.assignAll(drinks
+        .where((element) =>
+            element.name.toLowerCase().contains(value.trim().toLowerCase()))
+        .toList());
+    update();
   }
 }

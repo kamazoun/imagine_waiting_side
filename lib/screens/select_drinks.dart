@@ -22,6 +22,23 @@ class SelectDrinks extends StatelessWidget {
             builder: (foodController) =>
                 Text('Drink orders: ${foodController.drinkOrders.length}')),
         actions: [
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25), color: Colors.white),
+            width: Get.width / 6,
+            height: 25,
+            child: TextField(
+              decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Search',
+                  labelText: 'Search',
+                  prefixIcon: Icon(Icons.search)),
+              onChanged: (value) {
+                foodController.setSearchedDrinks(value: value);
+              },
+            ),
+          ),
           IconButton(onPressed: passOrder, icon: const Icon(Icons.check))
         ],
       ),
@@ -29,12 +46,15 @@ class SelectDrinks extends StatelessWidget {
         padding: kIsWeb
             ? EdgeInsets.symmetric(vertical: 8.0, horizontal: Get.width / 4)
             : const EdgeInsets.all(1.0),
-        child: ListView.separated(
-          itemBuilder: (_, index) {
-            return DrinkOrdersListItem(drink: foodController.drinks[index]);
-          },
-          itemCount: foodController.drinks.length,
-          separatorBuilder: (_, __) => const Divider(),
+        child: GetBuilder<FoodController>(
+          builder: (foodController) => ListView.separated(
+            itemBuilder: (_, index) {
+              return DrinkOrdersListItem(
+                  drink: foodController.searchedDrinks[index]);
+            },
+            itemCount: foodController.searchedDrinks.length,
+            separatorBuilder: (_, __) => const Divider(),
+          ),
         ),
       ),
     );
