@@ -29,13 +29,14 @@ class SelectFoods extends StatelessWidget {
       ),
       body: Padding(
         padding: kIsWeb
-            ? const EdgeInsets.symmetric(vertical: 8.0, horizontal: 30)
+            ? EdgeInsets.symmetric(vertical: 8.0, horizontal: Get.width / 4)
             : const EdgeInsets.all(1.0),
-        child: ListView.builder(
+        child: ListView.separated(
           itemBuilder: (_, index) {
             return FoodOrdersListItem(food: foodController.foods[index]);
           },
           itemCount: foodController.foods.length,
+          separatorBuilder: (_, __) => const Divider(),
         ),
       ),
     );

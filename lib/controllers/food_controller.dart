@@ -125,18 +125,16 @@ class FoodController extends GetxController {
     return getFoodTotal() + getDrinkTotal();
   }
 
-  reduceDrinkStock() {
-    drinkOrders.forEach((Drink drink, quantity) {
-      DrinkFirestore.setDrinkStock(drink.id, drink.stock - quantity);
+  reduceDrinkStock() async {
+    drinkOrders.forEach((Drink drink, quantity) async {
+      await DrinkFirestore.setDrinkStock(drink.id, drink.stock - quantity);
     });
   }
 
-  reduceFoodCondimentsStock() {
+  reduceFoodCondimentsStock() async {
     foodOrders.forEach((Food food, int quantity) {
-      food.portions.forEach((Condiment condiment, int condimentQuantity) {
-        print(
-            'LA QTU ${quantity * condimentQuantity}, LA ESTORC ${condiment.stock}');
-        CondimentFirestore.setCondimentStock(
+      food.portions.forEach((Condiment condiment, int condimentQuantity) async {
+        await CondimentFirestore.setCondimentStock(
             condiment.id, condiment.stock - (quantity * condimentQuantity));
       });
     });

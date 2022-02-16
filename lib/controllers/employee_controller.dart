@@ -22,7 +22,6 @@ class EmployeeController extends GetxController {
   _setAllWaiters() async {
     final d = await WaiterFirestore.getAllWaiters();
     _waiters.assignAll(d);
-    print(waiters.length);
   }
 
   createWaiter(Waiter waiter) async {

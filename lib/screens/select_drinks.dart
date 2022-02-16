@@ -27,19 +27,20 @@ class SelectDrinks extends StatelessWidget {
       ),
       body: Padding(
         padding: kIsWeb
-            ? const EdgeInsets.symmetric(vertical: 8.0, horizontal: 30)
+            ? EdgeInsets.symmetric(vertical: 8.0, horizontal: Get.width / 4)
             : const EdgeInsets.all(1.0),
-        child: ListView.builder(
+        child: ListView.separated(
           itemBuilder: (_, index) {
             return DrinkOrdersListItem(drink: foodController.drinks[index]);
           },
           itemCount: foodController.drinks.length,
+          separatorBuilder: (_, __) => const Divider(),
         ),
       ),
     );
   }
 
-  passOrder() {
+  passOrder() async {
     final foodController = Get.find<FoodController>();
     final orderController = Get.find<OrderController>();
     final employeeController = Get.find<EmployeeController>();
@@ -49,7 +50,7 @@ class SelectDrinks extends StatelessWidget {
       waiterId: employeeController.selectedWaiter?.id ?? '',
       waiterName: employeeController.selectedWaiter?.name ?? '',
       at: DateTime.now(),
-      served: false,
+      served: true,
       paid: false,
       total: foodController.getTotalOrders(),
       drinkItems: foodController.drinkOrders
@@ -63,12 +64,12 @@ class SelectDrinks extends StatelessWidget {
     }
     orderController.createOrder(order);
 
-    foodController.reduceDrinkStock();
-    foodController.reduceFoodCondimentsStock();
+    await foodController.reduceDrinkStock();
+    await foodController.reduceFoodCondimentsStock();
 
     foodController.resetEverything();
     employeeController.resetEverything();
 
-    Get.to(() => const SelectWaiter());
+    Get.offAll(() => const SelectWaiter());
   }
 }
