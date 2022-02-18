@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:imagine_waiting_side/controllers/employee_controller.dart';
+import 'package:imagine_waiting_side/screens/see_orders.dart';
 import 'package:imagine_waiting_side/screens/select_foods.dart';
 import 'package:imagine_waiting_side/screens/widgets/waiter_grid.dart';
 
@@ -24,6 +25,16 @@ class SelectWaiter extends StatelessWidget {
             builder: (employeeController) => IconButton(
                 onPressed: null != employeeController.selectedWaiter
                     ? () {
+                        Get.to(() => SeeOrders(
+                            waiterId: employeeController.selectedWaiter!.id));
+                      }
+                    : null,
+                icon: const Icon(Icons.account_circle)),
+          ),
+          GetBuilder<EmployeeController>(
+            builder: (employeeController) => IconButton(
+                onPressed: null != employeeController.selectedWaiter
+                    ? () {
                         Get.to(() => const SelectFoods());
                       }
                     : null,
@@ -34,8 +45,8 @@ class SelectWaiter extends StatelessWidget {
       body: GetX<EmployeeController>(
         builder: (employeeController) => GridView.builder(
             itemCount: employeeController.waiters.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: kIsWeb ? 5 : 2,
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: kIsWeb ? 300 : 150,
                 crossAxisSpacing: 25,
                 mainAxisSpacing: 50),
             itemBuilder: (_, index) =>

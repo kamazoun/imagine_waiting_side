@@ -47,4 +47,15 @@ class OrderFirestore {
 
     return order;
   }
+
+  static Future<List<Order>> getWaiterOrders(String waiterId) async {
+    List<QueryDocumentSnapshot<Object?>> orders = await _ordersRef
+        //.where('waiterId', isEqualTo: waiterId)
+        .orderBy('at', descending: true)
+        .limit(25)
+        .get()
+        .then((QuerySnapshot<Object?> snapshot) => snapshot.docs);
+
+    return orders.map((QueryDocumentSnapshot e) => e.data() as Order).toList();
+  }
 }

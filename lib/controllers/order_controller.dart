@@ -24,4 +24,13 @@ class OrderController extends GetxController {
 
     update(); // Surprisingly without that, after adding GetX does not automatically refresh.
   }
+
+  Future<List<Order>> getWaiterOrders(String waiterId) async {
+    List<Order>? r = await OrderFirestore.getWaiterOrders(waiterId);
+
+    if (null == r || r.isEmpty) {
+      r = orders.where((element) => element.waiterId == waiterId).toList();
+    }
+    return r;
+  }
 }
