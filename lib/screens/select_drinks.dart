@@ -6,6 +6,7 @@ import 'package:imagine_waiting_side/controllers/employee_controller.dart';
 import 'package:imagine_waiting_side/controllers/food_controller.dart';
 import 'package:imagine_waiting_side/controllers/order_controller.dart';
 import 'package:imagine_waiting_side/models/order.dart';
+import 'package:imagine_waiting_side/screens/order_receipt.dart';
 import 'package:imagine_waiting_side/screens/select_waiter.dart';
 import 'package:imagine_waiting_side/screens/widgets/drink_orders_list_item.dart';
 
@@ -26,7 +27,7 @@ class SelectDrinks extends StatelessWidget {
             margin: const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25), color: Colors.white),
-            width: Get.width / 6,
+            width: Get.width / 4,
             height: 25,
             child: TextField(
               decoration: const InputDecoration(
@@ -43,7 +44,7 @@ class SelectDrinks extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: kIsWeb
+        padding: kIsWeb && Get.width > 500
             ? EdgeInsets.symmetric(vertical: 8.0, horizontal: Get.width / 4)
             : const EdgeInsets.all(1.0),
         child: GetBuilder<FoodController>(
@@ -87,9 +88,10 @@ class SelectDrinks extends StatelessWidget {
     await foodController.reduceDrinkStock();
     await foodController.reduceFoodCondimentsStock();
 
-    foodController.resetEverything();
-    employeeController.resetEverything();
+    /*foodController.resetEverything();
+    employeeController.resetEverything();*/
 
-    Get.offAll(() => const SelectWaiter());
+    //Get.offAll(() => const SelectWaiter());
+    Get.offAll(() => const OrderReceipt());
   }
 }

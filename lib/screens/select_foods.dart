@@ -28,7 +28,7 @@ class SelectFoods extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: kIsWeb
+        padding: kIsWeb && Get.width > 500
             ? EdgeInsets.symmetric(vertical: 8.0, horizontal: Get.width / 4)
             : const EdgeInsets.all(1.0),
         child: ListView.separated(

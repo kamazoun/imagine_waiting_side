@@ -13,34 +13,33 @@ class SeeOrders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final OrderController orderController = Get.find<OrderController>();
     return Scaffold(
       appBar: AppBar(),
-      body: GetBuilder<OrderController>(
-        builder: (orderController) => FutureBuilder<List<Order>>(
-          future: orderController.getWaiterOrders(waiterId),
-          builder: (_, futureSnapshot) {
-            if (futureSnapshot.connectionState != ConnectionState.done) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            List<Order>? orders = futureSnapshot.data;
-
-            if (null == orders) {
-              return const Center(child: Text('No orders yet!'));
-            }
-            return ListView.separated(
-              itemBuilder: (_, index) => DataTable(columns: [
-                const DataColumn(label: Text('Items')),
-                DataColumn(
-                    label: Text(
-                        orders[index].at.toIso8601String().substring(0, 16))),
-              ], rows: _buildOrderRows(orders[index])),
-              itemCount: orders.length,
-              separatorBuilder: (_, __) => const Divider(height: 30),
+      body: FutureBuilder<List<Order>>(
+        future: orderController.getWaiterOrders(waiterId),
+        builder: (_, futureSnapshot) {
+          if (futureSnapshot.connectionState != ConnectionState.done) {
+            return const Center(
+              child: CircularProgressIndicator(),
             );
-          },
-        ),
+          }
+          List<Order>? orders = futureSnapshot.data;
+
+          if (null == orders) {
+            return const Center(child: Text('No orders yet!'));
+          }
+          return ListView.separated(
+            itemBuilder: (_, index) => DataTable(columns: [
+              const DataColumn(label: Text('Items')),
+              DataColumn(
+                  label: Text(
+                      orders[index].at.toIso8601String().substring(0, 16))),
+            ], rows: _buildOrderRows(orders[index])),
+            itemCount: orders.length,
+            separatorBuilder: (_, __) => const Divider(height: 30),
+          );
+        },
       ),
     );
   }

@@ -31,6 +31,8 @@ class OrderController extends GetxController {
     if (null == r || r.isEmpty) {
       r = orders.where((element) => element.waiterId == waiterId).toList();
     }
+    r.sort((o1, o2) => o2.at.compareTo(o1.at));
+
     return r;
   }
 }
